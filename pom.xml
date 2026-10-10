@@ -16,7 +16,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <main.class>com.cacheguard.CacheGuardApp</main.class>
-    <flatlaf.version>3.5.4</flatlaf.version>
+    <flatlaf.version>3.7.2</flatlaf.version>
     <junit.version>5.10.2</junit.version>
   </properties>
 
