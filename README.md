@@ -1,145 +1,264 @@
-# CacheGuard – Intelligent LRU/LFU Cache Simulator
+# CacheGuard — Intelligent Cache Replacement Simulator
 
-[![CI](https://github.com/YOUR_USERNAME/cacheguard/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/cacheguard/actions/workflows/ci.yml)
-![Java 17](https://img.shields.io/badge/Java-17-orange)
-![License MIT](https://img.shields.io/badge/license-MIT-blue)
+[![CI](https://github.com/Samar-Adil/CacheGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/Samar-Adil/CacheGuard/actions/workflows/ci.yml)
+![Java 17](https://img.shields.io/badge/Java-17-orange?logo=openjdk&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-An educational desktop app that shows how cache replacement policies behave. Enter a request
-sequence, pick a policy and a cache size, and step through it block by block, or replay the same
-stream through all five policies at once.
+**CacheGuard** is an interactive desktop application designed to demonstrate, simulate, and compare cache replacement algorithms. It provides a visual environment for exploring cache behavior, analyzing hit and miss ratios, and understanding how different replacement policies perform under identical workloads.
 
-Built with **Java 17**, **Swing** and **FlatLaf** (dark and light themes), using a strict
-**MVC** structure. Settings and history are stored as **JSON**; long simulations run on background
-threads so the window never freezes.
+Built with **Java 17, Java Swing, and FlatLaf**, CacheGuard follows the **Model–View–Controller (MVC)** architectural pattern, with a focus on modularity, performance, and maintainability.
 
-> Replace `YOUR_USERNAME` in this file and in `site/index.html` with your GitHub username after you push.
+> Explore cache replacement strategies, step through individual memory requests, and compare algorithm performance in one application.
 
 ## Features
 
-| Screen | What it does |
-|---|---|
-| **Dashboard** | Headline numbers, quick navigation, system specs (Java, OS, cores, heap), recent sessions, policy cheat sheet |
-| **Simulation** | Capacity slider (2–16, default 4), algorithm selector, request input, **Step Forward / Run All / Reset**, animated cache blocks with HIT / MISS badges, request strip, step-by-step trace, example lessons, workload generator |
-| **Comparison** | All five policies on identical requests, run in parallel. Hits, misses, hit ratio %, miss ratio %, evictions, time. Custom sequence or generated workload up to 5,000,000 requests, with progress and cancel |
-| **Statistics** | Summary cards, average hit ratio per policy, hit-ratio trend per session, breakdown table, full history |
-| **Settings** | Dark / light theme, default capacity and algorithm, JSON export / import (merge or replace), clear history, open data folder |
+### Interactive Dashboard
+- Overview of key cache performance metrics.
+- System information, including Java version, operating system, processor count, and JVM heap information.
+- Recent simulation sessions and a quick-reference guide to replacement policies.
 
-### Policies
+### Cache Simulation
+- Configure cache capacity from 2 to 16 blocks.
+- Select a replacement algorithm and enter a custom request sequence.
+- Execute simulations one step at a time or run them to completion.
+- Visualize cache contents and distinguish cache hits from misses.
+- Inspect request history and step-by-step execution traces.
+- Explore example workloads and generate synthetic request sequences.
 
-| Policy | Evicts | Structure | Cost per access |
+### Algorithm Comparison
+- Run all five replacement policies against the same request stream.
+- Compare cache hits, misses, hit ratio, miss ratio, evictions, and execution time.
+- Use custom request sequences or generated workloads of up to 5,000,000 requests.
+- Track execution progress and cancel long-running comparisons.
+
+### Statistics and History
+- Review aggregate simulation statistics.
+- Compare average hit ratios across replacement policies.
+- Visualize hit-ratio trends across recorded sessions.
+- Inspect detailed result tables and simulation history.
+
+### Settings and Data Management
+- Switch between dark and light themes.
+- Configure default cache capacity and replacement policy.
+- Export and import application data in JSON format, with merge and replace options.
+- Clear simulation history and open the application data directory.
+
+## Cache Replacement Algorithms
+
+CacheGuard implements five replacement policies:
+
+| Algorithm | Replacement Strategy | Core Data Structures | Expected Access Complexity |
 |---|---|---|---|
-| LRU | Least recently used | `HashMap` + doubly linked list | O(1) |
-| LFU | Least frequently used, ties by recency | `HashMap` + frequency buckets (`LinkedHashSet`) | O(1) |
-| FIFO | Oldest resident block | `ArrayDeque` + `HashSet` | O(1) |
-| MRU | Most recently used | `HashMap` + doubly linked list | O(1) |
-| Random | A random block (seeded, repeatable) | `ArrayList` + index map | O(1) |
+| LRU | Evicts the least recently used block | HashMap + doubly linked list | O(1) |
+| LFU | Evicts the least frequently used block; ties are resolved by recency | HashMap + frequency buckets using LinkedHashSet | O(1) |
+| FIFO | Evicts the oldest resident block | ArrayDeque + HashSet | O(1) |
+| MRU | Evicts the most recently used block | HashMap + doubly linked list | O(1) |
+| Random | Evicts a randomly selected block using a seeded, repeatable random source | ArrayList + index map | O(1) |
 
-The first three are the core algorithms; MRU and Random complete the five-way comparison.
-The Simulation screen's example menu includes Belady's anomaly for FIFO, a loop larger than the
-cache (where MRU wins) and a hot block (where LFU beats LRU).
+The implementation provides a consistent simulation environment for comparing the behavior of these policies across different request patterns.
+
+**Built-in learning scenarios include:**
+- Belady's anomaly with FIFO.
+- Sequential workloads larger than the available cache capacity.
+- Workloads with frequently accessed blocks to explore the behavior of LFU and LRU.
+
+*Complexity figures describe the intended data-structure operations; actual runtime depends on workload size, implementation details, and execution environment.*
+
+## Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Language | Java 17 |
+| Desktop UI | Java Swing |
+| UI Theming | FlatLaf |
+| Architecture | Model–View–Controller (MVC) |
+| Data Persistence | JSON |
+| Build Tool | Apache Maven |
+| Testing | JUnit / Maven test suite |
+| CI/CD | GitHub Actions |
 
 ## Requirements
 
-- JDK 17 or newer
-- Maven 3.8+ (to build)
+Before building CacheGuard, ensure that the following tools are installed:
 
-## Build and run
+- **JDK 17 or newer**
+- **Apache Maven 3.8 or newer**
+- Git, if cloning the repository
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-mvn package                              # compiles, runs tests, builds target/cacheguard-1.0.0.jar
-java -jar target/cacheguard-1.0.0.jar    # runnable jar with FlatLaf bundled
+git clone https://github.com/Samar-Adil/CacheGuard.git
+cd CacheGuard
 ```
 
-Or use the helper scripts: `scripts/run.sh` (macOS / Linux) and `scripts/run.bat` (Windows).
-To run from source: `mvn compile exec:java -Dexec.mainClass=com.cacheguard.CacheGuardApp`.
+### 2. Build the application
 
-### Keyboard shortcuts
+```bash
+mvn clean package
+```
 
-| Keys | Action |
+This compiles the source code, runs the test suite, and packages the application into a JAR file.
+
+### 3. Launch CacheGuard
+
+```bash
+java -jar target/cacheguard-1.0.0.jar
+```
+
+The packaged application includes its required runtime dependencies, including FlatLaf.
+
+### Alternative: Run from source
+
+```bash
+mvn compile exec:java -Dexec.mainClass=com.cacheguard.CacheGuardApp
+```
+
+Helper scripts are also provided:
+
+- macOS/Linux: `scripts/run.sh`
+- Windows: `scripts/run.bat`
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
 |---|---|
-| Ctrl+1 … Ctrl+5 | Switch screen (Cmd on macOS) |
-| Ctrl+T | Toggle dark / light theme |
-| Ctrl+E / Ctrl+I | Export / import data |
-| Ctrl+→ | Step forward (Simulation) |
-| Ctrl+Enter | Run all, or cancel a running one (Simulation) |
-| Ctrl+R | Reset (Simulation) |
+| Ctrl+1 to Ctrl+5 | Navigate between screens |
+| Ctrl+T | Toggle dark/light theme |
+| Ctrl+E | Export application data |
+| Ctrl+I | Import application data |
+| Ctrl+Right Arrow | Advance one simulation step |
+| Ctrl+Enter | Run or cancel a simulation |
+| Ctrl+R | Reset the current simulation |
 
-## Project structure
+On macOS, use **Command** instead of **Ctrl** where supported by the application.
 
+## Project Structure
+
+The codebase is organized into separate model, view, controller, and utility layers.
+
+```text
+CacheGuard/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── docs/
+│   └── ARCHITECTURE.md
+├── scripts/
+│   ├── run.sh
+│   └── run.bat
+├── site/
+│   └── index.html
+├── src/
+│   ├── main/
+│   │   └── java/com/cacheguard/
+│   │       ├── CacheGuardApp.java
+│   │       ├── model/
+│   │       ├── view/
+│   │       ├── controller/
+│   │       └── util/
+│   └── test/
+├── .gitignore
+├── .vercelignore
+├── CHANGELOG.md
+├── LICENSE
+├── pom.xml
+├── vercel.json
+└── README.md
 ```
-src/main/java/com/cacheguard/
-├── CacheGuardApp.java            entry point
-├── model/                        no Swing; fully unit-tested
-│   ├── Cache, AbstractCache      interface + template (counters, hit/miss/evict flow)
-│   ├── LRUCache, LFUCache, FIFOCache, MRUCache, RandomCache, RecencyListCache
-│   ├── Simulation, StepRecord, SimulationResult, SlotLayout
-│   ├── WorkloadGenerator, WorkloadPattern
-│   ├── AppState, Settings, SessionRecord, StatisticsSummary, CacheStats
-├── view/                         Swing screens
-│   ├── MainFrame, ScreenPanel
-│   ├── DashboardPanel, SimulationPanel, ComparisonPanel, StatisticsPanel, SettingsPanel
-│   └── components/               CacheBlocksPanel, BarChartPanel, LineChartPanel, StatCard, ...
-├── controller/                   listeners, engines, worker threads
-│   ├── AppController             wiring, navigation, background saving, theme changes
-│   ├── SimulationController      step / run all (SwingWorker) / reset
-│   ├── ComparisonController      SwingWorker + thread pool, one thread per policy
-│   ├── StatisticsController, SettingsController, StorageService
-└── util/
-    ├── Json                      dependency-free JSON parser and writer
-    ├── ThemeManager              FlatLaf dark / light + palette for custom painting
-    ├── FileStore                 atomic file writes
-    └── RequestParser, AppInfo
-```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the pieces fit together.
+### Architectural Overview
 
-## Data and privacy
+- **Model:** Contains cache implementations, simulation logic, workload generation, application state, settings, and statistics.
+- **View:** Implements the Swing interface, including the dashboard, simulator, comparison screen, statistics, settings, and reusable UI components.
+- **Controller:** Coordinates user interactions, simulation execution, navigation, background tasks, persistence, and theme changes.
+- **Utilities:** Provides JSON parsing and serialization, theme management, atomic file operations, request parsing, and system information.
 
-Everything stays on your machine. Preferences and history are written to
-`~/.cacheguard/settings.json` and `~/.cacheguard/sessions.json` (override with
-`-Dcacheguard.home=/some/folder`). The latest 1,000 sessions are kept. A corrupt file is renamed to
-`*.corrupt-<timestamp>` rather than deleted, and the app starts with defaults.
+For a more detailed explanation, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Tests
+## Testing and Quality Assurance
+
+Run the automated test suite with:
 
 ```bash
 mvn test
 ```
 
-The suite covers each policy against a naive reference implementation on thousands of random
-streams, the simulation engine (stepping, cancelling, resuming, large runs), the JSON parser, the
-request parser, and persistence including import / export and recovery from corrupt files.
-Tests are headless and need no display.
+The test suite covers cache replacement policies against reference implementations, simulation behavior, request parsing, JSON processing, and persistence scenarios.
 
-## Deploying
+Tests are designed to run in headless environments, making them suitable for continuous integration.
 
-### GitHub
+## Data and Privacy
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/cacheguard.git
-git push -u origin main
+CacheGuard stores application settings and simulation history locally on your machine. It does not require a remote database for its core functionality.
+
+By default, application data is stored in:
+
+```text
+~/.cacheguard/settings.json
+~/.cacheguard/sessions.json
 ```
 
-The included workflow (`.github/workflows/ci.yml`) builds and tests on Linux, Windows and macOS with
-Java 17 and 21. Push a tag such as `v1.0.0` and it attaches the runnable jar to a GitHub release.
+The storage location can be customized with the JVM property:
 
-### Vercel
+```bash
+-Dcacheguard.home=/some/folder
+```
 
-CacheGuard is a desktop application. **Vercel cannot run Swing apps**, because it hosts websites
-and serverless functions and has no display. What Vercel can host is the static project page in
-`site/`, which describes the app and links to the jar on your GitHub releases:
+The application retains up to 1,000 sessions. When a stored data file is detected as corrupt, it is renamed with a corruption timestamp rather than silently overwritten.
 
-1. Import the GitHub repository in Vercel.
-2. Leave the framework preset as **Other**. `vercel.json` already sets the output directory to `site`
-   and turns off the build step.
-3. Deploy. Then replace `YOUR_USERNAME` in `site/index.html` with your GitHub username.
+## Continuous Integration
+
+The repository includes a GitHub Actions workflow at `.github/workflows/ci.yml` for building and testing the project across supported operating systems and Java versions.
+
+Check the [Actions tab](https://github.com/Samar-Adil/CacheGuard/actions) for build and test results.
+
+## Deployment
+
+### GitHub Releases
+
+CacheGuard is a desktop application. The runnable JAR can be distributed through GitHub Releases so users can download it and run it locally.
+
+The included CI workflow is configured to attach the JAR to a release when a version tag is pushed, subject to the workflow's configuration and successful execution.
+
+### Vercel Website
+
+The Java Swing application itself cannot run directly in a browser or be hosted as a conventional web application on Vercel.
+
+However, the repository includes a `site/` directory containing a static project page. Vercel can host this page to provide a browser-accessible landing page with project information and download links.
+
+To deploy it:
+
+1. Import the `Samar-Adil/CacheGuard` repository into Vercel.
+2. Select **Other** as the framework preset.
+3. Configure the project to serve the `site/` directory, as specified in `vercel.json`.
+4. Deploy the project and open the generated URL.
+
+See the repository's `vercel.json` and `site/index.html` for the deployment configuration and website content.
+
+## Roadmap
+
+Potential future improvements include:
+
+- Additional replacement policies and configurable workloads.
+- More detailed performance visualizations.
+- Expanded automated tests and benchmarking.
+- Improved accessibility and simulation explanations.
 
 ## License
 
-[MIT](LICENSE)
+CacheGuard is distributed under the [MIT License](LICENSE).
 
+## Author
 
+**Samar-Adil**
+
+- GitHub: [@Samar-Adil](https://github.com/Samar-Adil)
+- Project repository: [CacheGuard](https://github.com/Samar-Adil/CacheGuard)
+
+---
+
+*CacheGuard — making cache replacement algorithms easier to visualize, understand, and compare.*
