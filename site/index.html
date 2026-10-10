@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CacheGuard</title>
+  <meta name="description" content="CacheGuard is a desktop simulator that shows how LRU, LFU, FIFO, MRU and Random cache eviction policies behave, step by step.">
+  <style>
+    :root {
+      --bg: #f6f7f9; --card: #ffffff; --border: #d8dde3; --text: #1b1f24; --muted: #5d6671;
+      --accent: #2563eb; --accent-text: #ffffff; --code: #eef1f5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1f2124; --card: #2a2d31; --border: #3d4248; --text: #e6e8eb; --muted: #9aa1a9;
+        --accent: #5b9bff; --accent-text: #0d1117; --code: #181a1d;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.55;
+           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 960px; margin: 0 auto; padding: 0 16px 64px; }
+    header { padding: 72px 0 40px; }
+    h1 { font-size: clamp(2rem, 6vw, 3.2rem); margin: 0 0 12px; letter-spacing: -0.02em; }
+    h2 { font-size: 1.35rem; margin: 48px 0 16px; }
+    p.lead { font-size: 1.15rem; color: var(--muted); max-width: 640px; margin: 0 0 28px; }
+    .btn { display: inline-block; padding: 12px 22px; border-radius: 10px; font-weight: 600;
+           text-decoration: none; margin: 0 10px 10px 0; }
+    .btn.primary { background: var(--accent); color: var(--accent-text); }
+    .btn.secondary { border: 1px solid var(--border); color: var(--text); background: var(--card); }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; overflow: hidden; }
+    th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: 0; }
+    th { color: var(--muted); font-weight: 600; font-size: 0.85rem; }
+    .scroll { overflow-x: auto; }
+    pre { background: var(--code); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+          overflow-x: auto; margin: 0; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92rem; }
+    footer { color: var(--muted); font-size: 0.9rem; margin-top: 56px; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>CacheGuard</h1>
+    <p class="lead">Watch cache eviction policies decide, one request at a time. A desktop simulator for
+      LRU, LFU, FIFO, MRU and Random replacement, built with Java 17 and Swing.</p>
+    <!-- Replace YOUR_USERNAME with your GitHub username after you push the repository. -->
+    <a class="btn primary" href="https://github.com/YOUR_USERNAME/cacheguard/releases/latest">Download the jar</a>
+    <a class="btn secondary" href="https://github.com/YOUR_USERNAME/cacheguard">View source</a>
+  </header>
+
+  <section>
+    <h2>What you can do</h2>
+    <div class="grid">
+      <div class="card"><h3>Step through requests</h3>
+        <p>Pick a policy and 2&ndash;16 blocks, enter a request sequence, then step forward or run all.
+          Hits, misses and evictions show up on the blocks as they happen.</p></div>
+      <div class="card"><h3>Compare all five policies</h3>
+        <p>Replay one identical stream, even millions of requests, through every policy in parallel and
+          compare hits, misses, ratios and evictions.</p></div>
+      <div class="card"><h3>See the trends</h3>
+        <p>Every finished run is saved. Statistics shows average hit ratio per policy and how your
+          sessions have changed over time.</p></div>
+      <div class="card"><h3>Keep your data</h3>
+        <p>Settings and history are stored as JSON and can be exported and imported. Dark and light
+          themes included.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The policies</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Policy</th><th>Evicts</th><th>Data structure</th></tr></thead>
+        <tbody>
+          <tr><td>LRU</td><td>The block unused for the longest time</td><td>HashMap + doubly linked list</td></tr>
+          <tr><td>LFU</td><td>The block with the fewest accesses (ties: least recent)</td><td>HashMap + frequency buckets</td></tr>
+          <tr><td>FIFO</td><td>The oldest resident block</td><td>ArrayDeque + HashSet</td></tr>
+          <tr><td>MRU</td><td>The most recently used block</td><td>HashMap + doubly linked list</td></tr>
+          <tr><td>Random</td><td>A random block (seeded, repeatable)</td><td>ArrayList + index map</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Run it</h2>
+    <p>You need Java 17 or newer.</p>
+<pre><code>java -jar cacheguard-1.0.0.jar</code></pre>
+    <p>Or build from source with Maven:</p>
+<pre><code>git clone https://github.com/YOUR_USERNAME/cacheguard.git
+cd cacheguard
+mvn package
+java -jar target/cacheguard-1.0.0.jar</code></pre>
+  </section>
+
+  <footer>CacheGuard is a desktop application; this page only describes it and links to the download.
+    MIT licensed.</footer>
+</main>
+</body>
+</html>

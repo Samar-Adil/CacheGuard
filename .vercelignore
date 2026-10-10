@@ -1,0 +1,6 @@
+src/
+scripts/
+docs/
+target/
+pom.xml
+.github/

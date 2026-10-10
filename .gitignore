@@ -1,0 +1,40 @@
+# Build output
+target/
+out/
+build/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+dependency-reduced-pom.xml
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+nbproject/
+nbbuild/
+nbdist/
+.factorypath
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and crash dumps
+*.log
+hs_err_pid*
+replay_pid*
+
+# CacheGuard runtime data (the app writes to ~/.cacheguard by default)
+.cacheguard/
+cacheguard-export-*.json
+
+# Local environment and deploy tooling
+.env
+.env.*
+.vercel/
+node_modules/
